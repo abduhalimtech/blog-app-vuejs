@@ -1,6 +1,6 @@
 <template>
     <div class="text-center w-50 m-auto">
-        <form class="form-signup">
+        <form class="form-signup" @submit.prevent="submitHandler">
             <img class="mb-4 mt-3 logo-img" :src="logo" alt="logo" width="72" height="72">
             <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
             <Input 
@@ -9,7 +9,7 @@
                 :placeholder="'Your Name'" 
                 :id="'inputName'" 
                 :rules="{ required: true, minlength: 2, autofocus: true }" 
-            />
+                />
 
             <Input 
                 :label="'Email'" 
@@ -17,7 +17,7 @@
                 :placeholder="'Your Email'" 
                 :id="'inputEmail'" 
                 :rules="{ required: true }" 
-            />
+                />
 
             <Input 
                 :label="'Password'" 
@@ -25,9 +25,9 @@
                 :placeholder="'Your Password'" 
                 :id="'inputPassword'" 
                 :rules="{ required: true, minlength: 8 }" 
-            />
+                />
             
-            <Button type="submit">Sign Up</Button>
+            <Button type="submit" :click="submitHandler" :disabled="isLoading" >  Sign Up</Button>
         </form>
     </div>
 </template>
@@ -40,6 +40,19 @@ export default {
         return {
             logo,
         }
+    },
+    computed:{
+        isLoading(){
+            return this.$store.state.auth.isLoading;
+        },
+    },
+    methods: {
+        submitHandler(){
+            this.$store.commit('setLoading', true);
+        }
+    },
+    mounted() {
+        console.log(this.$store.state.auth.isLoading);
     },
 }
 </script>

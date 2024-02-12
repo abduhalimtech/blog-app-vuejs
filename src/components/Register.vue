@@ -9,6 +9,7 @@
                 :placeholder="'Your Name'" 
                 :id="'inputName'" 
                 :rules="{ required: true, minlength: 2, autofocus: true }" 
+                v-model="username"
                 />
 
             <Input 
@@ -17,6 +18,7 @@
                 :placeholder="'Your Email'" 
                 :id="'inputEmail'" 
                 :rules="{ required: true }" 
+                v-model="email"
                 />
 
             <Input 
@@ -25,6 +27,7 @@
                 :placeholder="'Your Password'" 
                 :id="'inputPassword'" 
                 :rules="{ required: true, minlength: 8 }" 
+                v-model="password"
                 />
             
             <Button type="submit" :click="submitHandler" :disabled="isLoading" >  Sign Up</Button>
@@ -39,6 +42,9 @@ export default {
     data() {
         return {
             logo,
+            username: '',
+			email: '',
+			password: '',
         }
     },
     computed:{
@@ -49,11 +55,21 @@ export default {
     methods: {
         submitHandler(){
             this.$store.commit('setLoading', true);
-        }
+            const data = {
+                username: this.username,
+				email: this.email,
+				password: this.password,
+            }
+            this.$store.
+                dispatch('register', data)
+                .then(user => {
+					console.log('USER', user)
+					this.$router.push({name: 'home'})
+				})
+				.catch(err => console.log('ERROR', err))
+        },
     },
-    mounted() {
-        console.log(this.$store.state.auth.isLoading);
-    },
+   
 }
 </script>
 

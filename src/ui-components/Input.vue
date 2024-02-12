@@ -9,7 +9,10 @@
                :pattern="rules.pattern"
                :minlength="rules.minlength"
                :maxlength="rules.maxlength"
-               :autofocus="rules.autofocus" />
+               :autofocus="rules.autofocus" 
+               @input="updateInput"
+               :value="modelValue"
+        />
     </div>
 </template>
 <script>
@@ -26,9 +29,16 @@ export default {
         rules: {
             type: Object,
             default: () => ({})
-        }
+        },
+        modelValue: [String, Number],
         
     },
+    methods: {  
+        updateInput(e) {
+            this.$emit('update:modelValue', e.target.value)
+        },
+    },
+
 }
 </script>
 <style>
